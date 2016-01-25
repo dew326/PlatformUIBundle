@@ -289,12 +289,12 @@ YUI.add('ez-dateandtime-editview', function (Y) {
                 utcTimeStamp,
                 localizedTimeStamps;
 
-            if (valueOfDateInput && valueOfTimeInput){
+            if (isNaN(valueOfDateInput) || isNaN(valueOfTimeInput)) {
+                return null;
+            } else {
                 localizedTimeStamps = valueOfDateInput + valueOfTimeInput;
                 utcTimeStamp = this._getUtcTimeStamp(localizedTimeStamps);
                 return {timestamp: utcTimeStamp/1000};
-            } else {
-                return null;
             }
         },
     },{

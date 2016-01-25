@@ -10,7 +10,8 @@ YUI.add('ez-time-editview-tests', function (Y) {
         getFieldWithSecondsTestOldBrowsers,
         getEmptyFieldTest,
         getEmptyFieldTestOldBrowsers,
-        getFieldWithoutSecondsTestOldBrowsers;
+        getFieldWithoutSecondsTestOldBrowsers,
+        getFieldMidnightTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ time editView test",
@@ -435,6 +436,31 @@ YUI.add('ez-time-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getEmptyFieldTestOldBrowsers);
+
+    getFieldMidnightTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {
+                isRequired: false,
+                fieldSettings: {
+                    useSeconds: false
+                }
+            },
+            ViewConstructor: Y.eZ.TimeEditView,
+            filledValue: '00:00',
+            convertedValue: 0,
+
+            _setNewValue: function () {
+                this.view._set('supportsTimeInput', true);
+                this.view.get('container').one('input').set('value', this.filledValue);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isNumber(fieldValue, 'the fieldValue should be an object');
+                Y.Assert.areSame(this.convertedValue, fieldValue, 'the converted date should match the fieldValue timestamp');
+            },
+        })
+    );
+    Y.Test.Runner.add(getFieldMidnightTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Time Edit View registration test";

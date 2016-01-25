@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-dateandtime-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, getEmptyFieldTest;
+    var viewTest, registerTest, getFieldTest, getEmptyFieldTest, getFieldTestMidnight;
 
     viewTest = new Y.Test.Case({
         name: "eZ date and time editView test",
@@ -912,6 +912,35 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getEmptyFieldTest);
+
+    getFieldTestMidnight = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {
+                isRequired: false,
+                fieldSettings: {
+                    useSeconds: false
+                }
+            },
+            ViewConstructor: Y.eZ.DateAndTimeEditView,
+            expectedDateValue: '1986-09-08',
+            expectedTimeValue: '00:00',
+
+            _setNewValue: function () {
+                var c = this.view.get('container');
+                c.one('.ez-dateandtime-date-input-ui input').set('value', this.expectedDateValue);
+                c.one('.ez-dateandtime-time-input-ui input').set('value', this.expectedTimeValue);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                var expected = 526521600, // '1986-09-08' '00:00' in UTC
+                    tzOffset =  new Date(expected * 1000).getTimezoneOffset() * 60;
+
+                Y.Assert.isObject(fieldValue, 'the fieldValue should be an object');
+                Y.Assert.areSame(expected + tzOffset, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp');
+            },
+        })
+    );
+    Y.Test.Runner.add(getFieldTestMidnight);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Date and time Edit View registration test";

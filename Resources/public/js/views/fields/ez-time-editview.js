@@ -168,10 +168,12 @@ YUI.add('ez-time-editview', function (Y) {
             var valueOfInput;
 
             valueOfInput = this._getInputNode().get('valueAsNumber');
-            if (valueOfInput) {
+
+            if (isNaN(valueOfInput)) {
+                return null;
+            } else {
                 return valueOfInput/1000;
             }
-            return null;
         },
 
         /**
