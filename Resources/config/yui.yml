@@ -422,6 +422,11 @@ system:
                         - 'ez-movecontentactionview'
                         - 'ez-translateactionview'
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
+                ez-trashbarview:
+                    requires:
+                        - 'ez-barview'
+                        - 'ez-buttonactionview'
+                    path: %ez_platformui.public_dir%/js/views/ez-trashbarview.js
                 ez-rawcontentview:
                     requires:
                         - 'ez-templatebasedview'
@@ -472,6 +477,7 @@ system:
                     requires:
                         - 'ez-templatebasedview'
                         - 'trashview-ez-template'
+                        - 'ez-trashbarview'
                         - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/ez-trashview.js
                 trashview-ez-template:
