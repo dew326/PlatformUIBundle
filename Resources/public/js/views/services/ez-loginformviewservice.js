@@ -36,17 +36,17 @@ YUI.add('ez-loginformviewservice', function (Y) {
         _load: function (next) {
             var app = this.get('app');
 
-            app.isLoggedIn(function (error) {
-                if ( error ) {
-                    next();
-                    return;
-                }
-                app.navigateTo('dashboard');
-            });
-// TODO: login to REST
-            // app.storeSessionInfoInCapi(function (error) {
-            //     app.navigateTo('studioBrowser');
+            // app.isLoggedIn(function (error) {
+            //     if ( error ) {
+            //         next();
+            //         return;
+            //     }
+            //     app.navigateTo('dashboard');
             // });
+// TODO: login to REST
+            app.storeSessionInfoInCapi(function (error) {
+                app.navigateTo('studioBrowser');
+            });
         },
 
         /**
